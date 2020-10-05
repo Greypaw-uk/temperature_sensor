@@ -1,0 +1,44 @@
+﻿<Window x:Class="Temperature_Monitor.ConfigForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Config" Height="200" Width="500">
+
+    <Window.Background>
+        <RadialGradientBrush>
+            <GradientStop Color="#FF336CCB" Offset="1"/>
+            <GradientStop Color="#FFA3B4D1" Offset="0.03"/>
+        </RadialGradientBrush>
+    </Window.Background>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="130"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Endpoint:" Foreground="AliceBlue"/>
+        <TextBox Grid.Row="0" Grid.Column="2" Name="tb_Endpoint" 
+                 Text="" Background="Transparent" Foreground="AliceBlue"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Warning Temperature" Foreground="AliceBlue"/>
+        <TextBox Grid.Row="2" Grid.Column="2" Name="tb_Warn" 
+                 Text="" Width="auto" Background="Transparent" Foreground="AliceBlue"/>
+
+        <StackPanel Grid.Row="4" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button  Name="btn_save" Content="Save" Click="Btn_Save_OnClick" Height="30" Width="50" Margin="5"/>
+            <Button Name="btn_cancel" Content="Cancel" Click="Btn_Cancel_OnClick" Height="30" Width="50"/>
+        </StackPanel>
+    </Grid>
+</Window>

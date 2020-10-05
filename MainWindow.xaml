@@ -1,0 +1,82 @@
+﻿<Window x:Class="Temperature_Monitor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Temperature Monitor" Height="450" Width="800">
+
+    <Window.Background>
+        <RadialGradientBrush>
+            <GradientStop Color="#FF336CCB" Offset="1"/>
+            <GradientStop Color="#FFA3B4D1" Offset="0.03"/>
+        </RadialGradientBrush>
+    </Window.Background>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Row="0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                <Menu Background="#FF336CCB" Foreground="AliceBlue" Width="780">
+                    <Menu.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <DockPanel HorizontalAlignment="Stretch"/>
+                        </ItemsPanelTemplate>
+                    </Menu.ItemsPanel>
+                    <MenuItem Header="GET JSON" Click="GetJson" HorizontalAlignment="Right"/>
+                    <MenuItem Header="Save XML" Click="SaveXml" HorizontalAlignment="Right"/>
+                    <MenuItem Header="Config" Click="OpenConfig"  HorizontalAlignment="Right"/>
+                </Menu>
+            </StackPanel>
+        </Grid>
+
+        <Grid Row="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0"  Text="Name" Background="#FF336CCB" Foreground="AliceBlue" Padding="10,0,0,0"/>
+                <ListBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding PersonList}" DisplayMemberPath="Name"/>
+
+                <TextBlock Grid.Column="1" Grid.Row="0"  Text="Age" Background="#FF336CCB" Foreground="AliceBlue" Padding="10,0,0,0"/>
+                <ListBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding PersonList}" DisplayMemberPath="Age"/>
+
+                <TextBlock Grid.Column="2" Grid.Row="0" Text="Temperature" Background="#FF336CCB" Foreground="AliceBlue" Padding="10,0,0,0"/>
+                <ListBox Grid.Column="2" Grid.Row="1" ItemsSource="{Binding PersonList}" DisplayMemberPath="Temperature"/>
+
+
+                <TextBlock Grid.Column="0" Grid.Row="2"  Text="Name" Background="Red" Foreground="AliceBlue" Padding="10,0,0,0"/>
+                <ListBox Grid.Column="0" Grid.Row="3" ItemsSource="{Binding PersonListWarning}" DisplayMemberPath="Name" />
+
+                <TextBlock Grid.Column="1" Grid.Row="2"  Text="Age" Background="Red" Foreground="AliceBlue" Padding="10,0,0,0"/>
+                <ListBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding PersonListWarning}" DisplayMemberPath="Age"/>
+
+                <TextBlock Grid.Column="2" Grid.Row="2" Text="Temperature" Background="Red" Foreground="AliceBlue" Padding="10,0,0,0"/>
+                <ListBox Grid.Column="2" Grid.Row="3" ItemsSource="{Binding PersonListWarning}" DisplayMemberPath="Temperature"/>
+
+                <StackPanel Grid.Row="5" Orientation="Horizontal">
+                    <Label Content="Average age: " VerticalAlignment="Center"/>
+                    <TextBlock Name="tb_Age" Text="" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
