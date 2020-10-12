@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -83,10 +84,29 @@ namespace TempMonitoring
                 XML.SaveXML();
         }
 
-        private void btn_SMTP_Click(object sender, RoutedEventArgs e)
+        private void ContextDisplay_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Minimized)
+            {
+                WindowState = WindowState.Normal;
+            }
+        }
+
+        private void SMTP_OnClick(object sender, RoutedEventArgs e)
         {
             SMTPWindow s = new SMTPWindow();
             s.Show();
+        }
+
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            var result = MessageBox.Show("Do you really wish to exit Temperature Monitor?",
+                "Warning", MessageBoxButton.YesNo);
+
+            if (result != MessageBoxResult.Yes)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

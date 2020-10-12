@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\gotng\Downloads\TempMonitoring\obj\Debug\
+E:\_git\temperature_sensor\obj\Debug\
 TempMonitoring
 none
 false
 DEBUG;TRACE
-C:\Users\gotng\Downloads\TempMonitoring\App.xaml
+E:\_git\temperature_sensor\App.xaml
 2-802503442
 
 13-1119923796
-16-1037151385
+172038190196
 MainWindow.xaml;SMTPWindow.xaml;
 
 False

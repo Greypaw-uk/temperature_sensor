@@ -110,16 +110,20 @@ namespace TempMonitoring
 
         private void btn_setPassword_Click(object sender, RoutedEventArgs e)
         {
-            var input = pw_input.Password;
-            var confirm = pw_confirm.Password;
-
-            if (input.Equals(confirm))
+            if (pw_input.Password.Equals(pw_confirm.Password))
             {
-                AppData.CurrentSettings.AdminPassword = Crypto.EncryptString(input);
-                XML.SaveXML();
+                if (pw_input.Password.Length >= 8)
+                {
+                    AppData.CurrentSettings.AdminPassword = Crypto.EncryptString(pw_input.Password);
+                    XML.SaveXML();
 
-                sp_setPassword.Visibility = Visibility.Hidden;
-                sp_password.Visibility = Visibility.Visible;
+                    sp_setPassword.Visibility = Visibility.Hidden;
+                    sp_password.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    MessageBox.Show("Password must be at least 8 characters long");
+                }
             }
             else
             {

@@ -50,12 +50,15 @@ namespace TempMonitoring
                 "<!DOCTYPE html PUBLIC “-//W3C//DTD XHTML 1.0 Transitional//EN” “https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd”>");
             sb.Append("<html xmlns=“https://www.w3.org/1999/xhtml”>");
             sb.Append("<P> <H1> A user has displayed an elevated Temperature. </H1> </P>");
+
+            //Add date/time to email
             sb.Append("<P>" + string.Format("Time: {0}", date.ToString()) + "</P>");
 
+            //Add temperature to email after conversion
             var temp = ConvertTemp(r.Temperature);
             sb.Append("<P>" + string.Format("Temperature: {0}", temp) + "</P>");
 
-            //TODO Display image in email
+            //Add image to email
             sb.Append("<P> <img src=\"data:image;base64," + r.CheckPic + "\" /> </P>");
             sb.Append("<html>");
 

@@ -4,7 +4,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="SMTP Settings" Height="300" Width="400">
+        Title="SMTP Settings" Height="300" Width="400"
+        ResizeMode="NoResize">
     <Grid>
         <StackPanel Name="sp_setPassword" Visibility="Hidden">
             <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
