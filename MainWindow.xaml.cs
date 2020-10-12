@@ -1,112 +1,92 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
-using System.Net.Http;
+﻿using System;
 using System.Windows;
-using System.Windows.Threading;
+using System.Windows.Media.Imaging;
 
-namespace Temperature_Monitor
+namespace TempMonitoring
 {
     public partial class MainWindow : Window
     {
-        private static HttpClient httpClient = new HttpClient();
-
-        MainWindowDataContext context = new MainWindowDataContext();
-        ConfigFormDataContex config = new ConfigFormDataContex();
-
         public MainWindow()
         {
-            config.BaseUrl = "https://dev.osbornetechnologies.co.uk/project/";
-            config.WarningTemperature = 37.1m;
-
             InitializeComponent();
-            DataContext = context;
         }
 
-        private async void GetJson(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Clear the observable collection to avoid duplicates
-            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                new Action(() => MainWindowDataContext.PersonList.Clear()));
-            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                new Action(() => MainWindowDataContext.PersonListWarning.Clear()));
+            Listener listener = new Listener();
+            listener.RunListener();
 
-            //GET JSON and convert to JObject
-            var response = await httpClient.GetAsync(config.BaseUrl).ConfigureAwait(false);
-            var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var myObject = JObject.Parse(responseString);
+            if (!XML.CheckForXML())
+                XML.CreateXML();
 
-            //Get JTokens from JObject and return as a list
-            var people = myObject
-                                        .Children()
-                                        .SelectMany(jt => jt.Children())
-                                        .Select(c => JsonConvert.DeserializeObject<Person>(c.ToString()))
-                                        .ToList();
+            XML.LoadFromXML();
+            
+            tb_Email.Text = AppData.CurrentSettings.EmailAddress;
+            tb_IP.Text = AppData.CurrentSettings.IPAddress;
+            tb_Port.Text = AppData.CurrentSettings.Port;
+            tb_Temperature.Text = AppData.CurrentSettings.MaxTemperature;
+        }
 
-            //Create new Person from previous list
-            foreach (var person in people)
+        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (LanguagePicker.SelectedIndex == 0)
             {
-                if (person.Temperature <= RetainedValues.retainedWarningTemperature)
-                {
-                    await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                        new Action(() => MainWindowDataContext.PersonList.Add(new Person
-                            {
-                                Name = person.Name,
-                                Age = person.Age,
-                                Temperature = person.Temperature})
-                        ));
-                }
-                else
-                {
-                    await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                        new Action(() => MainWindowDataContext.PersonListWarning.Add(new Person
-                            {
-                                Name = person.Name,
-                                Age = person.Age,
-                                Temperature = person.Temperature
-                            })
-                        ));
-                }
+                AppData.CurrentSettings.Language = AppData.Language.Celcius;
+            }
+            else if (LanguagePicker.SelectedIndex == 1)
+            {
+                AppData.CurrentSettings.Language = AppData.Language.Fahrenheit;
+            }
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            Validation val = new Validation();
+
+            bool isEmailValidated = val.ValidateEmail(tb_Email.Text);
+            bool isIPValidated = val.ValidateIP(tb_IP.Text);
+            bool isPortValidated = val.ValidatePort(tb_Port.Text);
+            bool isTempValidated = val.ValidateTemperature(tb_Temperature.Text);
+
+            if (isEmailValidated)
+            {
+                img_Email.Source = new BitmapImage(new Uri("../Resources/images/tick.png", UriKind.Relative));
+                AppData.CurrentSettings.EmailAddress = tb_Email.Text;
+            }
+            else
+            {
+                img_Email.Source = new BitmapImage(new Uri("../Resources/images/cross.png", UriKind.Relative));
             }
 
-            //Present Average Age
-            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                new Action(() => CalculateAverageAge()));
-
-        }
-
-        private void SaveXml(object sender, RoutedEventArgs e)
-        {
-            SaveXml xml = new SaveXml();
-            xml.XMLSave();
-        }
-
-        private void OpenConfig(object sender, RoutedEventArgs e)
-        {
-            ConfigForm configForm = new ConfigForm();
-            configForm.Show();
-        }
-
-        private void CalculateAverageAge()
-        {
-            float number = 0f;
-            float totalAge = 0f;
-
-            foreach (var person in MainWindowDataContext.PersonList)
+            if (isIPValidated && isPortValidated)
             {
-                number++;
-                totalAge += person.Age;
+                img_IP.Source = new BitmapImage(new Uri("../Resources/images/tick.png", UriKind.Relative));
+                AppData.CurrentSettings.IPAddress = tb_IP.Text;
+                AppData.CurrentSettings.Port = tb_Port.Text;
+            }
+            else
+            {
+                img_IP.Source = new BitmapImage(new Uri("../Resources/images/cross.png", UriKind.Relative));
             }
 
-            foreach (var person in MainWindowDataContext.PersonListWarning)
+            if (isTempValidated)
             {
-                number++;
-                totalAge += person.Age;
+                img_temp.Source = new BitmapImage(new Uri("../Resources/images/tick.png", UriKind.Relative));
+                AppData.CurrentSettings.MaxTemperature = tb_Temperature.Text;
+            }
+            else
+            {
+                img_temp.Source = new BitmapImage(new Uri("../Resources/images/cross.png", UriKind.Relative));
             }
 
-            float averageAge = totalAge / number;
-            tb_Age.Text = averageAge.ToString();
+            if (isEmailValidated && isIPValidated && isPortValidated && isTempValidated)
+                XML.SaveXML();
+        }
+
+        private void btn_SMTP_Click(object sender, RoutedEventArgs e)
+        {
+            SMTPWindow s = new SMTPWindow();
+            s.Show();
         }
     }
 }

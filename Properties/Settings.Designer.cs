@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Temperature_Monitor.Properties
+namespace TempMonitoring.Properties
 {
 
 

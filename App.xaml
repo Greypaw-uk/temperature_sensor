@@ -1,7 +1,7 @@
-﻿<Application x:Class="Temperature_Monitor.App"
+﻿<Application x:Class="TempMonitoring.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Temperature_Monitor"
+             xmlns:local="clr-namespace:TempMonitoring"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          
